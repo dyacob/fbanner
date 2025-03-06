@@ -34,28 +34,27 @@ for ease of use, and extension to, other font choices.
 
 What's New in Version 0.17 ?
 ----------------------------
-   o -g switch added to draw characters with Ge'ez letters.
-   o revisions to work with libeth 0.33.
-     It is *required* that you have pre-installed libeth v0.33 or later with
-     this release of fbanner.  Get LibEth from http://libeth.netpedia.net
-   o cleaned up as per -Wall warnings.
+    o -g switch added to draw characters with Ge'ez letters.
+    o revisions to work with libeth 0.33.
+      It is *required* that you have pre-installed libeth v0.33 or later with
+      this release of fbanner.  Get LibEth from http://libeth.netpedia.net
+    o cleaned up as per -Wall warnings.
 
 What's New in Version 0.16 ?
 ----------------------------
-   o Bug fixes from v0.15.
-   o libeth's Unicode processing is compliant with June amendments to
-     UTC-95-055A.
+    o Bug fixes from v0.15.
+    o libeth's Unicode processing is compliant with June amendments to UTC-95-055A.
 
 What's New in Version 0.15 ?
 ----------------------------
 
 Advanced text and character manipulation!! 
 
-  o Mirror image printing with -m
-  o Rotated printing with -r, -rr, -rrr and +r +rr +rrr
-    r = 90 degrees 
-  o Flip each letter on its horizontal axis with -fh
-  o Flip each letter on its vertical axis with -fv
+    o Mirror image printing with -m
+    o Rotated printing with -r, -rr, -rrr and +r +rr +rrr
+      r = 90 degrees 
+    o Flip each letter on its horizontal axis with -fh
+    o Flip each letter on its vertical axis with -fv
 
 Fidel banner now uses the "libeth" 0.1 beta motor.  Unfortunately this
 will increase the size of the executable.  If size truly prevents anyone
@@ -80,11 +79,11 @@ mode); enter the 2 command lines as follows ("XY" is some number like "16"):
 
     tar -zxvf fbanner-0.XY.tar.gz
 
-(
-  Or in 2 Steps :
-    gunzip fbanner-0.XY.tar.gz
-    tar -xvf fbanner-0.XY.tar
-)
+    (
+      Or in 2 Steps :
+        gunzip fbanner-0.XY.tar.gz
+        tar -xvf fbanner-0.XY.tar
+    )
 
 You will find a new subdirectory with the name "fbanner-0.XY" that contains the 
 fbanner source files.  If you have obtained your copy of fbanner through encoded 
@@ -111,26 +110,26 @@ files.  You may make this directory anywhere in your account, lets call it
         % [ edit line 4 of fban.h and replace ./fonts with
             FONTDIR -do NOT delete the " " marks! ]
 
-IF YOU DO NOT HAVE gcc
+### IF YOU DO NOT HAVE gcc
 
 You should then have "cc" and "lex".  You may edit the Makefile in
 lines 2 and 5 for cc and lex.
 
 
-DEFAULT LANGUAGE
+### DEFAULT LANGUAGE
 
 You may change the default language rules by editing commenting out and
 uncommenting the choices on lines 12-14 of the fban.h file.  Tigrigna
 rules are the default if no change is made.
 
 
-TO COMPILE:  
+### TO COMPILE:  
 
         % make       - makes everything.
         % make clean - removes unnecessary files.
 
 
-TO RUN:  
+### TO RUN:  
 
         % fbanner  < Hit RETURN or ENTER Key > 
                      -gives a full list of options
@@ -168,13 +167,13 @@ page instructions for Unix systems.  If you can not install the
 man pages into a system man directory.  You may create your own
 man directory by:
 
-    % cd fbanner-0.XY
-    % mkdir man
-    % mkdir man/man1
-    % cp etc/*.1 man/man1
-    % setenv MANPATH $MANPATH":"$PWD/man
-    % man fbanner
-    % man sera
+     % cd fbanner-0.XY
+     % mkdir man
+     % mkdir man/man1
+     % cp etc/*.1 man/man1
+     % setenv MANPATH $MANPATH":"$PWD/man
+     % man fbanner
+     % man sera
 
 It is more practical to set your new MANPATH in your .cshrc file
 where the $PWD/man directory in the above is replaced the complete
