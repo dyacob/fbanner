@@ -168,13 +168,13 @@ page instructions for Unix systems.  If you can not install the
 man pages into a system man directory.  You may create your own
 man directory by:
 
-   % cd fbanner-0.XY
-   % mkdir man
-   % mkdir man/man1
-   % cp etc/*.1 man/man1
-   % setenv MANPATH $MANPATH":"$PWD/man
-   % man fbanner
-   % man sera
+    % cd fbanner-0.XY
+    % mkdir man
+    % mkdir man/man1
+    % cp etc/*.1 man/man1
+    % setenv MANPATH $MANPATH":"$PWD/man
+    % man fbanner
+    % man sera
 
 It is more practical to set your new MANPATH in your .cshrc file
 where the $PWD/man directory in the above is replaced the complete
@@ -184,9 +184,9 @@ path name for your man directory.
 For More Info On SERA 
 ---------------------
 
-   https://www.academia.edu/87262938/The_SERA_Users_Guide
-   http://abyssiniagateway.net/fidel/sera-faq.html
+    https://www.academia.edu/87262938/The_SERA_Users_Guide
+    http://abyssiniagateway.net/fidel/sera-faq.html
 
 and
 
-   ftp://ftp.geez.org/fidel/sera-docs/
+    ftp://ftp.geez.org/fidel/sera-docs/
