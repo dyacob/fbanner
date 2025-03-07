@@ -96,26 +96,26 @@ files.  You may make this directory anywhere in your account, lets call it
         % [ edit line 7 of fban.h and replace ./fonts with
             FONTDIR -do NOT delete the " " marks! ]
 
-IF YOU DO NOT HAVE gcc AND flex
+### IF YOU DO NOT HAVE gcc AND flex
 
 You should then have ``cc'' and ``lex''.  You may edit the Makefile in
 lines 2 and 5 for cc and lex.
 
 
-DEFAULT LANGUAGE
+### DEFAULT LANGUAGE
 
 You may change the default language rules by editing commenting out and
 uncommenting the choices on lines 12-14 of the fban.h file.  Tigrigna
 rules are the default if no change is made.
 
 
-TO COMPILE:  
+### TO COMPILE:  
 
         % make       - makes everything.
         % make clean - removes unnecessary files.
 
 
-TO RUN:  
+### TO RUN:  
 
         % fbanner  < Hit RETURN or ENTER Key > 
                      -gives a full list of options
@@ -169,7 +169,9 @@ path name for your man directory.
 For More Info On SERA 
 ---------------------
 
-   http://www.cs.indiana.edu/hyplan/dmulholl/fidel/sera-guide.ps
-   http://www.cs.indiana.edu/hyplan/dmulholl/fidel/sera-faq.html
+   https://www.academia.edu/87262938/The_SERA_Users_Guide
+   http://abyssiniagateway.net/fidel/sera-faq.html
+
 and
-   ftp://ftp.cs.indiana.edu/pub/fidel/sera-docs/
+
+   ftp://ftp.geez.org/fidel/sera-docs/
