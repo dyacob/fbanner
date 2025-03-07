@@ -12,26 +12,18 @@
                    ff    BB   BB   aa  aaa    nn    RR    RR  
                    ff    BBBBBB     aaaa aa   nn    RR    RR 
 
-                                Fidel Banner 0.17
+                                Fidel Banner 0.16
                                by  Admas  Concepts
 
 Intro
 -----
 
-``fbanner'' is provided for the Fidel script Unix user community to have the
+``fbanner'' is provided for the Fidel Script Unix user community to have the
 same utility for Fidel that ``banner'' provides for Latin script.  fbanner uses
 phonetic input following the SERA convention for Fidel.  fbanner works by
 converting BDF format fonts into large editible text.  This principal allows
-for ease of use, and extension to, other font choices.
+for easy us of, and extension to, other font choices.
 
-
-What's New in Version 0.17 ?
-----------------------------
-   o -g switch added to draw characters with Ge'ez letters.
-   o revisions to work with libeth 0.33.
-     It is *required* that you have pre-installed libeth v0.33 or later with
-     this release of fbanner.  Get LibEth from http://libeth.netpedia.net
-   o cleaned up as per -Wall warnings.
 
 What's New in Version 0.16 ?
 ----------------------------
@@ -71,11 +63,11 @@ Installation
 If you have down loaded the file fbanner-0.XY.tar.Z by ftp (set in binary transfer
 mode); enter the 2 command lines as follows (``XY'' is some number like ``16''):
 
-    tar -zxvf fbanner-0.XY.tar.gz
+    tar -zxvf fbanner-0.XY.tar.Z 
 
 (
   Or in 2 Steps :
-    gunzip fbanner-0.XY.tar.gz
+    uncompress fbanner-0.XY.tar.Z
     tar -xvf fbanner-0.XY.tar
 )
 
@@ -101,10 +93,10 @@ files.  You may make this directory anywhere in your account, lets call it
         % mkdir FONTDIR
         % cp fonts/*.bdf FONTDIR
 
-        % [ edit line 4 of fban.h and replace ./fonts with
+        % [ edit line 7 of fban.h and replace ./fonts with
             FONTDIR -do NOT delete the " " marks! ]
 
-IF YOU DO NOT HAVE gcc
+IF YOU DO NOT HAVE gcc AND flex
 
 You should then have ``cc'' and ``lex''.  You may edit the Makefile in
 lines 2 and 5 for cc and lex.

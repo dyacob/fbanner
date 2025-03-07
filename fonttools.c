@@ -1,20 +1,15 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <libeth/fidel.h>
-#include <libeth/etstdio.h>
-#include <libeth/etstring.h>
-#include <libeth/etctype.h>
-#include <libeth/sysinfo.h>
-#include "include/fban.h"
+#include <fidel.h>
+#include <fidel_fban.h>
+#include <fban.h>
 
 extern int UniToTraditional[];
 
 #ifdef __STDC__
-  bdffont* read_bdf ( FILE* fp );
-  void draw_word    ( FCHAR* word, bdffont Ffont[], bdffont Lfont[], MyFlags* fbanFlags, LibEthFlags* lethFlags);
-  void draw_word_r  ( FCHAR* word, bdffont Ffont[], bdffont Lfont[], MyFlags* fbanFlags, LibEthFlags* lethFlags);
-  char get_fban_char ( FCHAR uniAddr, LibEthFlags* lethFlags );
-#endif /* __STDC__ */
+bdffont* read_bdf ( FILE* fp );
+void draw_word    ( FCHAR* word, bdffont Ffont[], bdffont Lfont[], MyFlags* fbanFlags, SERAFlags* seraFlags);
+void draw_word_r  ( FCHAR* word, bdffont Ffont[], bdffont Lfont[], MyFlags* fbanFlags, SERAFlags* seraFlags);
+#endif
 
 
 /*  READ_BDF  -  reads from file .bdf file and constructs FIDEL bit array */
@@ -29,13 +24,15 @@ read_bdf (fp)
 {
 
 int width;
-int bitmap;
+int bitmap,buf;
+unsigned char trow;
 boolean done;
-int bbyoff;
-register int i,j,k;
+int K,bbxoff,bbyoff;
+register int i,j,k,m;
 int fbxx,fbyy,font_w,font_h;
+int address, lastAddress;
 int start,end;
-char str[WSIZE];
+char str[WSIZE],ch;
 bdffont* font;
 
 
@@ -116,12 +113,12 @@ bdffont* font;
 
 
 void 
-draw_word ( word, Ffont, Lfont, fbanFlags, lethFlags )
+draw_word ( word, Ffont, Lfont, fbanFlags, seraFlags )
   FCHAR* word;
   bdffont Ffont[];
   bdffont Lfont[];
   MyFlags* fbanFlags;
-  LibEthFlags* lethFlags;
+  SERAFlags* seraFlags;
 {
 
 unsigned char trow, vrow, shift, skip;
@@ -129,7 +126,9 @@ register unsigned int addr;
 register int i,j,k,l,m;
 int kBegin, kEnd, lBegin, lEnd;
 int jBegin, jEnd; 
+unsigned int uniMap;
 enum Scripts script;
+enum Languages lang;
 boolean done[WSIZE],Done = false;
 boolean setShift; 
 bdffont* Font;
@@ -179,7 +178,7 @@ int ldiff=0, lNext=0, fdiff=0, diff, font_h, yDiff;
      for ( k = kBegin; k != kEnd; k = ( (kEnd > kBegin) ? k++ : k-- ) ) 
        {
 
-         addr = word[k];
+         addr = uniMap = word[k];
          if ( addr == NIL )  /* skip instead of print blank space */
            continue;     
          if ( 0 < addr && addr < ANSI )
@@ -188,17 +187,19 @@ int ldiff=0, lNext=0, fdiff=0, diff, font_h, yDiff;
              Font   = Lfont;
              diff   = ldiff; 
            }
-         else if ( isethiopic(addr) && !isprivate(addr) ) 
+         else if ( isethio(addr) && !isprivate(addr) ) 
            {
              script  = fidel;
              Font    = Ffont;
              diff    = fdiff; 
+             uniMap -= UNIFIDEL;
            }
          else if ( isprivate(addr) )
            {
              script = special;
              Font   = Ffont;
              diff   = fdiff; 
+             uniMap = (UNITOTAL-1) + (uniMap - PRIVATE_USE_END);
            }
          else
            script = greek;
@@ -267,23 +268,9 @@ int ldiff=0, lNext=0, fdiff=0, diff, font_h, yDiff;
 
                               case special :
                               case fidel :
-                                fprintf ( stdout, "%c", get_fban_char( word[k], lethFlags ) );
-                                break;
-
-                              case greek :
-                              default :
-                                break;
-                            } 
-                        else if ( fbanFlags->use_geez )
-                          switch ( script ) 
-                            {
-                              case latin :
-                                fprintf ( stdout,"%c", word[k] );
-                                break;
-
-                              case special :
-                              case fidel :
-                                fidel_putc ( word[k], lethFlags );
+                                lang = (seraFlags->major->l == lat) ? seraFlags->minor->l : seraFlags->major->l;
+                                fprintf ( stdout, "%s%s", fscript[lang][UniToTraditional[uniMap]].c,
+                                                          fscript[lang][UniToTraditional[uniMap]].v );
                                 break;
 
                               case greek :
@@ -308,16 +295,16 @@ int ldiff=0, lNext=0, fdiff=0, diff, font_h, yDiff;
                    || ( lBegin > lEnd && lNext == 0 ) ) 
                 done[k] = true; 
 
-          } /* if ( !done[k] ) */
-        else
-          for ( j = 0; j < Font[addr].bbw; j++ ) 
-            fprintf ( stdout, " " );
+            } /* if ( !done[k] ) */
+          else
+            for ( j = 0; j < Font[addr].bbw; j++ ) 
+              fprintf ( stdout, " " );
 
-        if ( script == latin  )
-          fprintf ( stdout, "  " );    /* Latin kerning */
-        else
-          for ( i = 0; i < (Font[addr].dwx0 - Font[addr].bbw); i++ )  /* Fidel Kerning */
-            fprintf ( stdout, " " );
+          if ( script == latin  )
+            fprintf ( stdout, "  " );    /* Latin kerning */
+          else
+            for ( i = 0; i < (Font[addr].dwx0 - Font[addr].bbw); i++ )  /* Fidel Kerning */
+              fprintf ( stdout, " " );
 
 
     } /* end for */
@@ -335,12 +322,12 @@ int ldiff=0, lNext=0, fdiff=0, diff, font_h, yDiff;
 }
 
 void 
-draw_word_r ( word, Ffont, Lfont, fbanFlags, lethFlags )
+draw_word_r ( word, Ffont, Lfont, fbanFlags, seraFlags )
   FCHAR* word;
   bdffont Ffont[];
   bdffont Lfont[];
   MyFlags* fbanFlags;
-  LibEthFlags* lethFlags;
+  SERAFlags* seraFlags;
 {
 
 unsigned char trow, vrow, shift, skip;
@@ -348,8 +335,10 @@ register unsigned int addr;
 register int i,j,k,l,m;
 int kBegin, kEnd, lBegin, lEnd;
 int jBegin, jEnd; 
+unsigned int uniMap;
 bdffont* Font;
 enum Scripts script;
+enum Languages lang;
 int ldiff=0,fdiff=0;
 boolean setShift; 
 
@@ -374,7 +363,7 @@ boolean setShift;
   for ( k = kBegin; k != kEnd; k = ( (kEnd > kBegin) ? k++ : k-- ) ) 
     {
 
-      addr = word[k];
+      addr = uniMap = word[k];
       if ( addr == NIL )  /* skip instead of print blank space */
         continue;     
       if ( 0 < addr && addr < ANSI )
@@ -382,15 +371,17 @@ boolean setShift;
           script = latin;
           Font   = Lfont;
         }
-      else if ( isethiopic(addr) && !isprivate(addr) ) 
+      else if ( isethio(addr) && !isprivate(addr) ) 
         {
           script  = fidel;
           Font    = Ffont;
+          uniMap -= UNIFIDEL;
         }
       else if ( isprivate(addr) )
         {
           script = special;
           Font   = Ffont;
+          uniMap = (UNITOTAL-1) + (uniMap - PRIVATE_USE_END);
         }
       else
         script = greek;
@@ -459,29 +450,15 @@ boolean setShift;
 
                         case special :
                         case fidel :
-                          fprintf ( stdout, "%c", get_fban_char( word[k], lethFlags ) );
+                          lang = (seraFlags->major->l == lat) ? seraFlags->minor->l : seraFlags->major->l;
+                          fprintf ( stdout, "%s%s", fscript[lang][UniToTraditional[uniMap]].c,
+                                                    fscript[lang][UniToTraditional[uniMap]].v );
                           break;
 
                         case greek :
                         default :
                           break;
                       }
-                    else if ( fbanFlags->use_geez )
-                      switch ( script ) 
-                        {
-                          case latin :
-                            fprintf ( stdout,"%c", word[k] );
-                            break;
-
-                          case special :
-                          case fidel :
-                            fidel_putc ( word[k], lethFlags );
-                            break;
-
-                          case greek :
-                          default :
-                            break;
-                        }
                   else
                     fprintf ( stdout, "%s", fbanFlags->sym );
                 else
@@ -503,25 +480,5 @@ boolean setShift;
     } /* end k loop */
 
     fprintf ( stdout, "\n" );
-
-}
-
-
-char
-get_fban_char ( uniAddr, lethFlags )
-  FCHAR uniAddr;
-  LibEthFlags* lethFlags;
-{
-
-
-char ch;
-unsigned char* fidelName;
-
-
-  fidelName = fidel_sputc ( uniAddr, lethFlags );
-  ch =  ( fidelName[0] == '`' || uniAddr == WORDSPACE) ? fidelName[1] : fidelName[0] ;
-
-  free ( fidelName );
-  return ( ch );
 
 }

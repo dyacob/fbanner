@@ -1,0 +1,125 @@
+.\" @(#)fbanner.1 0.16 96/05/19
+.\" GNU Copyleft 1996 Admas Concepts
+.TH fbanner 1 "11 Tr 1988 (20 Jan 1996)" "Admas Concepts"
+.SH NAME
+.ce
+.B fbanner \c
+\- make fidel posters
+.SH SYNOPSIS
+.B fbanner
+[
+-\c
+.ul 
+a 
+]
+[
+-\c
+.ul 
+fh
+]
+[
+-\c
+.ul 
+fv
+]
+[
+-\c
+.ul 
+h
+]
+[
+-\c
+.ul 
+l
+]
+[
+-\c
+.ul 
+m
+]
+[
++/\-\c 
+.ul 
+r 
+]
+[
+-\c
+.ul
+s
+]
+[
+-\c
+.ul 
+x
+]
+<
+.I string1 string2 ...
+>
+.SH DESCRIPTION
+.IX "fbanner" "" "\fLfbanner\fP \(em make posters"
+\f4Fbanner\fP
+prints its arguments in large letters on the standard output.
+The analog of Unix ``banner'' for Fidel script.
+.SH OPTIONS
+.TP
+.B \-a
+Draw character with corresponding alphabetic mapping.  The
+character choice will depend on language settings.
+.TP
+.B \-h
+Echoes help list to stderr and exits.
+.TP
+.B \-l LL(L)
+Set starting language to that specified by LL or LLL where LL(L)
+is an ISO-639 two or three letter identifier.  Supported languages
+are: am(h), ge(z), la(t), & ti(r).  This option is most useful with
+the -a option.
+.TP
+.B \-s
+Map ASCII space, `` '',  to Ge'ez wordspace (:).
+.TP
+.B \-x X(X)
+Use following character(s) (up to 2) for character pixels.
+.SH Text Manipulation Options
+.TP
+.B \-m
+Print mirrored text.
+.TP
+.B +/\-r(r)(r)
+Print rotated text +/-90 degrees for each
+.B r
+.TP
+.B \-fh
+Flip each character around horizontal axis.
+.TP
+.B \-fv
+Flip each character around vertical axis.
+.TP
+.B \-v
+Echo version number and exit.
+
+.SH AVAILABILITY
+.LP
+By ftp:  ftp://ftp.cs.indiana.edu/pub/fidel/fbanner/
+
+.SH Text References
+.LP
+.ul
+The System For Ethiopic Representation In ASCII,
+.br
+ftp://ftp.cs.indiana.edu/pub/fidel/sera-docs/sera.ps
+.br
+.ul
+The System User's Guide
+.br
+ftp://ftp.cs.indiana.edu/pub/fidel/sera-docs/sera-guide.ps
+.br
+.ul
+The SERA FAQ
+.br
+http://www.cs.indiana.edu/hyplan/dmulholl/fidel/sera-faq.html
+.SH SEE ALSO
+sera(1), banner(1), echo(1)
+
+.SH BUGS
+None reported, but lurking...
